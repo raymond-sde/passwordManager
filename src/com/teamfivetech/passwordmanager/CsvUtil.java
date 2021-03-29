@@ -11,9 +11,6 @@ import java.util.List;
 class CsvUtil {
     private static final String PATH_STRING = "data/passwords.txt";
 
-    public CsvUtil () {
-    }
-
     public List<Login> read() throws IOException {
         List<Login> result = new ArrayList<>();
 

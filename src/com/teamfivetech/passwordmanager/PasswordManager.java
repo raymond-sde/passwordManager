@@ -13,8 +13,8 @@ public class PasswordManager {
     }
 
     public void start() {
-        System.out.println(LINE_SEPARATOR);
-        System.out.println("Welcome to Password Manager");
+        getPrompter().info(LINE_SEPARATOR);
+        getPrompter().info("Welcome to Password Manager");
 
         String selection = null;
         List<String> menuOptions = Arrays.asList("Store Password", "List Passwords", "Quit");
@@ -49,36 +49,36 @@ public class PasswordManager {
 
     // TODO: implement CSV read functionality
     public void listPasswords() {
-        System.out.println("listPasswords()");
+        getPrompter().info("listPasswords()");
     }
 
     private void thankUser() {
-        System.out.println("Thank you for using Password Manager");
+        getPrompter().info("Thank you for using Password Manager");
     }
 
     // TODO: implement CSV write functionality
     public void enterPassword() {
-        System.out.println("enterNewPassword()");
+        getPrompter().info("enterNewPassword()");
     }
 
     // TODO: implement Password Generator / CSV write functionality
     public void generatePassword() {
-        String securityLevel = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
-        System.out.println("Selected: " + securityLevel);
+        String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
+        getPrompter().info("Selected: " + securityLevel);
     }
 
     private void printMenu(String title, List<String> menuOptions) {
-        System.out.println(LINE_SEPARATOR);
-        System.out.println(title.toUpperCase());
+        getPrompter().info(LINE_SEPARATOR);
+        getPrompter().info(title.toUpperCase());
 
         int index = 0;
 
         for (String menuOption : menuOptions) {
-            System.out.println("[" + (index + 1) + "] " + menuOption);
+            getPrompter().info("[" + (index + 1) + "] " + menuOption);
             index++;
         }
 
-        System.out.println(LINE_SEPARATOR);
+        getPrompter().info(LINE_SEPARATOR);
     }
 
     private String printNumberPrompt(int max) {
@@ -86,6 +86,10 @@ public class PasswordManager {
         String userPrompt = PrompterConstants.NUMBER_PROMPT + range + ": ";
         // number within range
         String regex = "[" + range + "]";
-        return prompter.prompt(userPrompt, regex, PrompterConstants.NUMBER_ERROR);
+        return getPrompter().prompt(userPrompt, regex, PrompterConstants.NUMBER_ERROR);
+    }
+
+    public Prompter getPrompter() {
+        return prompter;
     }
 }

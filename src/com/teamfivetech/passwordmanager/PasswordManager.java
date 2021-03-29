@@ -18,25 +18,24 @@ public class PasswordManager {
 
         while(!"3".equals(selection)) {
             printMenu("main menu", menuOptions);
-            selection = printPrompt(prompter, 3);
+            selection = printNumberPrompt(prompter, 3);
 
-            if ("1".equals(selection)) storePassword();
+            if ("1".equals(selection)) storePassword(prompter);
             if ("2".equals(selection)) listPasswords();
             if ("3".equals(selection)) thankUser();
         }
     }
 
-    public void storePassword() {
+    public void storePassword(Prompter prompter) {
         String selection = null;
-        Prompter prompter = new Prompter(new Scanner(System.in));
         List<String> menuOptions = Arrays.asList("Enter New Password", "Generate New Password", "Back to Main Menu", "Quit");
 
         while (true) {
             printMenu("store password", menuOptions);
-            selection = printPrompt(prompter, 4);
+            selection = printNumberPrompt(prompter, 4);
 
             if ("1".equals(selection)) enterPassword();
-            if ("2".equals(selection)) generatePassword();
+            if ("2".equals(selection)) generatePassword(prompter);
             if ("3".equals(selection)) break;
             if ("4".equals(selection)) {
                 thankUser();
@@ -60,9 +59,11 @@ public class PasswordManager {
     }
 
     // TODO: implement Password Generator / CSV write functionality
-    public void generatePassword() {
-        Prompter prompter = new Prompter(new Scanner(System.in));
-        String securityLevel = prompter.prompt("Please enter level of security (Easy, Medium, Hard): ");
+    public void generatePassword(Prompter prompter) {
+        String userPrompt = "Please enter level of security (Easy, Medium, Hard): ";
+        String securityLevelRegex = "(?i)^easy$|^medium$|^hard$";
+        String validationErrorMsg = "That is not a valid security level";
+        String securityLevel = prompter.prompt(userPrompt, securityLevelRegex, validationErrorMsg);
         System.out.println("Selected: " + securityLevel);
     }
 
@@ -80,10 +81,10 @@ public class PasswordManager {
         System.out.println(LINE_SEPARATOR);
     }
 
-    private String printPrompt(Prompter prompter, int max) {
+    private String printNumberPrompt(Prompter prompter, int max) {
         String userPrompt = "Please enter a number " + MENU_SELECTION_MIN + " - " + max + ": ";
         String rangeRegex = "[" + MENU_SELECTION_MIN + "-" + max + "]";
-        String validationError = "That is not a valid number";
-        return prompter.prompt(userPrompt, rangeRegex, validationError);
+        String validationErrorMsg = "That is not a valid number";
+        return prompter.prompt(userPrompt, rangeRegex, validationErrorMsg);
     }
 }

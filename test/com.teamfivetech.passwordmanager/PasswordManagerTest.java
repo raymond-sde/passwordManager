@@ -48,26 +48,24 @@ public class PasswordManagerTest {
     @Test
     public void prompterShouldRead_whenValidSecurityLevelResponse() throws Exception {
         Prompter prompter = new Prompter(new Scanner(new File("responses/validSecurityLevelResponses.txt")));
-        String userPrompt = PrompterConstants.SECURITY_LEVEL_PROMPT;
-        String validationErrorMsg = PrompterConstants.SECURITY_LEVEL_ERROR;
         String securityLevelPrompt;
 
-        securityLevelPrompt = prompter.prompt(userPrompt, PrompterConstants.SECURITY_LEVEL_REGEX, validationErrorMsg);
+        securityLevelPrompt = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         assertEquals("low", securityLevelPrompt);
 
-        securityLevelPrompt = prompter.prompt(userPrompt, PrompterConstants.SECURITY_LEVEL_REGEX, validationErrorMsg);
+        securityLevelPrompt = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         assertEquals("LOW", securityLevelPrompt);
 
-        securityLevelPrompt = prompter.prompt(userPrompt, PrompterConstants.SECURITY_LEVEL_REGEX, validationErrorMsg);
+        securityLevelPrompt = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         assertEquals("medium", securityLevelPrompt);
 
-        securityLevelPrompt = prompter.prompt(userPrompt, PrompterConstants.SECURITY_LEVEL_REGEX, validationErrorMsg);
+        securityLevelPrompt = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         assertEquals("MEDIUM", securityLevelPrompt);
 
-        securityLevelPrompt = prompter.prompt(userPrompt, PrompterConstants.SECURITY_LEVEL_REGEX, validationErrorMsg);
+        securityLevelPrompt = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         assertEquals("high", securityLevelPrompt);
 
-        securityLevelPrompt = prompter.prompt(userPrompt, PrompterConstants.SECURITY_LEVEL_REGEX, validationErrorMsg);
+        securityLevelPrompt = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         assertEquals("HIGH", securityLevelPrompt);
     }
 
@@ -75,9 +73,7 @@ public class PasswordManagerTest {
     public void prompterShouldThrowException_whenInvalidSecurityLevelRegex() {
         try {
             Prompter prompter = new Prompter(new Scanner(new File("responses/invalidSecurityLevelPrompt.txt")));
-            String userPrompt = PrompterConstants.SECURITY_LEVEL_PROMPT;
-            String validationErrorMsg = PrompterConstants.SECURITY_LEVEL_ERROR;
-            String securityLevelPrompt = prompter.prompt(userPrompt, PrompterConstants.SECURITY_LEVEL_REGEX, validationErrorMsg);
+            String securityLevelPrompt = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
 
             // prompt() should return null if regex fails
             assertNull(securityLevelPrompt);

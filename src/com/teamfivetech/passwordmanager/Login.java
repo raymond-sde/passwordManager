@@ -53,6 +53,6 @@ public class Login {
 
     @Override       // class Object
     public String toString() {
-        return super.toString();
+        return getId() + ", " + getSiteName() + ", " + getUserName() + ", " + getPassword();
     }
 }

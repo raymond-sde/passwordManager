@@ -4,7 +4,7 @@ import java.util.*;
 
 public class PasswordManager {
     private static final String LINE_SEPARATOR = new String(new char[30]).replace("\0", "-");
-    private static final int MENU_SELECTION_MIN = 1;
+    private static final int NUMBER_PROMPT_MIN = 1;
 
     private final Prompter prompter;
 
@@ -30,7 +30,7 @@ public class PasswordManager {
     }
 
     public void storePassword() {
-        String selection = null;
+        String selection;
         List<String> menuOptions = Arrays.asList("Enter New Password", "Generate New Password", "Back to Main Menu", "Quit");
 
         while (true) {
@@ -63,10 +63,7 @@ public class PasswordManager {
 
     // TODO: implement Password Generator / CSV write functionality
     public void generatePassword() {
-        String userPrompt = "Please enter level of security (Low, Medium, Hard): ";
-        String securityLevelRegex = "(?i)^low$|^medium$|^hard$";
-        String validationErrorMsg = "That is not a valid security level";
-        String securityLevel = prompter.prompt(userPrompt, securityLevelRegex, validationErrorMsg);
+        String securityLevel = prompter.prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         System.out.println("Selected: " + securityLevel);
     }
 
@@ -85,9 +82,10 @@ public class PasswordManager {
     }
 
     private String printNumberPrompt(int max) {
-        String userPrompt = "Please enter a number " + MENU_SELECTION_MIN + " - " + max + ": ";
-        String rangeRegex = "[" + MENU_SELECTION_MIN + "-" + max + "]";
-        String validationErrorMsg = "That is not a valid number";
-        return prompter.prompt(userPrompt, rangeRegex, validationErrorMsg);
+        String range = NUMBER_PROMPT_MIN + "-" + max;
+        String userPrompt = PrompterConstants.NUMBER_PROMPT + range + ": ";
+        // number within range
+        String regex = "[" + range + "]";
+        return prompter.prompt(userPrompt, regex, PrompterConstants.NUMBER_ERROR);
     }
 }

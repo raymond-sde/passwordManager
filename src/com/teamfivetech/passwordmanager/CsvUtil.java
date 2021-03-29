@@ -1,5 +1,6 @@
 package com.teamfivetech.passwordmanager;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,12 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 class CsvUtil {
-    private static final String PATH_STRING = "data/passwords.txt";
+    private Path pwFilePath;
+
+    public CsvUtil(String pwFilePath) {
+        this.pwFilePath = Path.of(pwFilePath);
+    }
 
     public List<Login> read() throws IOException {
         List<Login> result = new ArrayList<>();
 
-        Files.lines(Path.of(PATH_STRING)).forEach(line -> {
+        Files.lines(pwFilePath).forEach(line -> {
             String[] logins = line.split(",");
 
             String siteName = logins[1];
@@ -27,12 +32,19 @@ class CsvUtil {
     }
 
     public void write(List<Login> passwords) {
-        try (PrintWriter out = new PrintWriter(new FileWriter(PATH_STRING))) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(String.valueOf(pwFilePath)))) {
             for (Login login : passwords) {
-                out.println(login.toString());
+                if (login.getId() < passwords.size()) {
+                    out.println(login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
+                            + login.getPassword());
+                } else{
+                    out.print(login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
+                            + login.getPassword());
+                }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

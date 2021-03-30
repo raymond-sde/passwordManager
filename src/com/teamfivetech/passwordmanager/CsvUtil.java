@@ -32,20 +32,14 @@ class CsvUtil {
         return result;
     }
 
-    public void write(List<Login> passwords) {
-        try (PrintWriter out = new PrintWriter(new FileWriter(String.valueOf(pwFilePath)))) {
-            for (Login login : passwords) {
-                String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
-                        + login.getPassword();
-                if (login.getId() < passwords.size()) {
-                    out.println(output);
-                } else{
-                    out.print(output);
-                }
-            }
+    public void write(Login login) {
+        try {
+            PrintWriter out = new PrintWriter(new FileWriter(String.valueOf(pwFilePath)));
+            String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
+                                + login.getPassword();
+            out.println(output);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

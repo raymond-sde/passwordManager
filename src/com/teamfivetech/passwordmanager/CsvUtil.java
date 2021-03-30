@@ -11,8 +11,10 @@ import java.util.List;
 
 class CsvUtil {
     private Path pwFilePath;
+    private String pwFile;
 
     public CsvUtil(String pwFilePath) {
+        this.pwFile = pwFilePath;
         this.pwFilePath = Path.of(pwFilePath);
     }
 
@@ -33,8 +35,7 @@ class CsvUtil {
     }
 
     public void write(Login login) {
-        try {
-            PrintWriter out = new PrintWriter(new FileWriter(String.valueOf(pwFilePath)));
+        try (PrintWriter out = new PrintWriter(new FileWriter(pwFile, true))) {
             String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
                                 + login.getPassword();
             out.println(output);

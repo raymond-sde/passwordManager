@@ -19,6 +19,14 @@ public class Login {
     }
 
     // accessors
+    private static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Login.counter = counter;
+    }
+
     public int getId() {
         return id;
     }
@@ -53,6 +61,6 @@ public class Login {
 
     @Override       // class Object
     public String toString() {
-        return getId() + ", " + getSiteName() + ", " + getUserName() + ", " + getPassword();
+        return getId() + ", Site: " + getSiteName() + ", Username: " + getUserName() + ", Password: " + getPassword();
     }
 }

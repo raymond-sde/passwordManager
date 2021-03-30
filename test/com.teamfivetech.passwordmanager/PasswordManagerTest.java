@@ -84,4 +84,64 @@ public class PasswordManagerTest {
             assertEquals(expectedMsg, e.getMessage());
         }
     }
+
+    @Test
+    public void prompter_shouldRead_whenValidUserNameResponse() throws Exception {
+        Prompter prompter = new Prompter(new Scanner(new File("responses/validUserNameResponse.txt")));
+        String userNamePrompt;
+
+        userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        assertEquals("CoolUserName", userNamePrompt);
+
+        userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        assertEquals("FunUserName", userNamePrompt);
+
+        userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        assertEquals("GoodUserName", userNamePrompt);
+    }
+
+    @Test
+    public void prompter_shouldRead_whenValidSiteNameResponse() throws Exception {
+        Prompter prompter = new Prompter(new Scanner(new File("responses/validSiteNameResponse.txt")));
+        String userNamePrompt;
+
+        userNamePrompt = prompter.prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+        assertEquals("Reddit", userNamePrompt);
+
+        userNamePrompt = prompter.prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+        assertEquals("YouTube", userNamePrompt);
+
+        userNamePrompt = prompter.prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+        assertEquals("Google", userNamePrompt);
+    }
+
+    @Test
+    public void prompter_shouldThrowException_whenInvalidUserNameResponse() {
+        try {
+            Prompter prompter = new Prompter((new Scanner(new File("responses/invalidUserNameResponses.txt"))));
+            String userNamePrompt;
+
+            userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+
+            assertNull(userNamePrompt);
+            fail("Should throw exception");
+        } catch(Exception e){
+            assertEquals("No line found", e.getMessage());
+        }
+    }
+
+    @Test
+    public void prompter_shouldThrowException_whenInvalidSiteNameResponse() {
+        try {
+            Prompter prompter = new Prompter((new Scanner(new File("responses/invalidSiteNameResponses.txt"))));
+            String siteNamePrompt;
+
+            siteNamePrompt = prompter.prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+
+            assertNull(siteNamePrompt);
+            fail("Should throw exception");
+        } catch(Exception e){
+            assertEquals("No line found", e.getMessage());
+        }
+    }
 }

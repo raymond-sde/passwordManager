@@ -7,4 +7,9 @@ public class PrompterConstants {
     // low, medium, high (ignore case)
     public static final String SECURITY_LEVEL_REGEX = "(?i)^low$|^medium$|^high$";
     public static final String SECURITY_LEVEL_ERROR = "That is not a valid security level";
+    public static final String USER_NAME_PROMPT = "Enter new Username: ";
+    public static final String SITE_NAME_PROMPT = "Enter new site name: ";
+    public static final String VALID_RESPONSE_REGEX = "^[a-zA-Z0-9!@#$%^&*().]+$";
+    public static final String EMPTY_SITE_NAME_ERROR = "Site name cannot be blank";
+    public static final String EMPTY_USERNAME_ERROR = "Username cannot be blank";
 }

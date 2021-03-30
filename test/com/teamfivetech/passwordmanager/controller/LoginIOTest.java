@@ -1,5 +1,7 @@
-package com.teamfivetech.passwordmanager;
+package com.teamfivetech.passwordmanager.controller;
 
+import com.teamfivetech.passwordmanager.controller.core.LoginIO;
+import com.teamfivetech.passwordmanager.controller.core.Login;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,19 +10,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class CsvUtilTest {
+public class LoginIOTest {
     private static final String TEST_FILE = "data/CsvUtilTest.csv";
-    private CsvUtil csvUtil = null;
+    private LoginIO loginIO = null;
     private List<Login> logins = null;
 
     @Before
     public void setUp() throws Exception {
-        csvUtil = new CsvUtil(TEST_FILE);
+        loginIO = new LoginIO(TEST_FILE);
         try(PrintWriter out = new PrintWriter(new FileWriter(TEST_FILE))) {
             out.println("1,Reddit,sethm,a1b2c3d4");
             out.println("2,YouTube,coolnameguy,z1y2x3w4");
@@ -28,7 +29,7 @@ public class CsvUtilTest {
         catch(IOException e) {
             e.printStackTrace();
         }
-        logins = csvUtil.read();
+        logins = loginIO.read();
     }
 
     // tests that two logins are returned
@@ -73,11 +74,11 @@ public class CsvUtilTest {
     public void write_shouldReturnTrue_whenNewLoginsAdded() {
         Login newLog1 = new Login("Google", "coolnamebro", "pass1234");
         Login newLog2 = new Login("Facebook", "MusicMan87", "1234pass");
-        csvUtil.write(newLog1);
-        csvUtil.write(newLog2);
+        loginIO.write(newLog1);
+        loginIO.write(newLog2);
 
         try {
-            logins = csvUtil.read();
+            logins = loginIO.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,7 +113,7 @@ public class CsvUtilTest {
     // test expected exception when file does not exist
     @Test(expected = NoSuchFileException.class)
     public void read_shouldThrowException_whenBadFilenamePassed() throws Exception{
-        CsvUtil badUtil = new CsvUtil("bad/input.csv");
+        LoginIO badUtil = new LoginIO("bad/input.csv");
         logins = badUtil.read();
     }
 

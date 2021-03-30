@@ -1,4 +1,4 @@
-package com.teamfivetech.passwordmanager;
+package com.teamfivetech.passwordmanager.controller;
 
 import com.apps.util.Prompter;
 import org.junit.Test;

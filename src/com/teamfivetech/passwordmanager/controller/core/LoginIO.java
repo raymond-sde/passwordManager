@@ -1,6 +1,5 @@
-package com.teamfivetech.passwordmanager;
+package com.teamfivetech.passwordmanager.controller.core;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,11 +8,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-class CsvUtil {
+public class LoginIO {
     private Path pwFilePath;
     private String pwFile;
 
-    public CsvUtil(String pwFilePath) {
+    public LoginIO(String pwFilePath) {
         this.pwFile = pwFilePath;
         this.pwFilePath = Path.of(pwFilePath);
     }

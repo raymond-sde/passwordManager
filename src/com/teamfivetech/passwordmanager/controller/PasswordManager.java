@@ -1,5 +1,7 @@
-package com.teamfivetech.passwordmanager;
+package com.teamfivetech.passwordmanager.controller;
 import com.apps.util.Prompter;
+import com.teamfivetech.passwordmanager.controller.core.LoginIO;
+import com.teamfivetech.passwordmanager.controller.core.Login;
 
 import java.io.IOException;
 import java.util.*;
@@ -10,7 +12,7 @@ public class PasswordManager {
     private static final String PW_FILE_PATH = "data/passwords.csv";
 
     private final Prompter prompter;
-    private CsvUtil csvUtil = new CsvUtil(PW_FILE_PATH);
+    private LoginIO loginIO = new LoginIO(PW_FILE_PATH);
 
     public PasswordManager(Prompter prompter) {
         this.prompter = prompter;
@@ -25,7 +27,7 @@ public class PasswordManager {
 
         while(!"3".equals(selection)) {
             printMenu("main menu", menuOptions);
-            selection = printNumberPrompt(3);
+            selection = promptNumberRange(3);
 
             if ("1".equals(selection)) storePassword();
             if ("2".equals(selection)) listPasswords();
@@ -33,13 +35,13 @@ public class PasswordManager {
         }
     }
 
-    public void storePassword() {
+    private void storePassword() {
         String selection;
         List<String> menuOptions = Arrays.asList("Enter New Password", "Generate New Password", "Back to Main Menu", "Quit");
 
         while (true) {
             printMenu("store password", menuOptions);
-            selection = printNumberPrompt(4);
+            selection = promptNumberRange(4);
 
             if ("1".equals(selection)) enterPassword();
             if ("2".equals(selection)) generatePassword();
@@ -51,10 +53,10 @@ public class PasswordManager {
         }
     }
 
-    public void listPasswords() {
+    private void listPasswords() {
         List<Login> readLogins = null;
         try {
-            readLogins = csvUtil.read();
+            readLogins = loginIO.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,16 +70,16 @@ public class PasswordManager {
     }
 
     // TODO: implement CSV write functionality.  NEEDS TESTING
-    public void enterPassword() {
+    private void enterPassword() {
         String siteName = siteNamePrompt();
         String userName = userNamePrompt();
         String password = getPrompter().prompt("Enter new password: ");
         Login newLogin = new Login(siteName, userName, password );
-        csvUtil.write(newLogin);
+        loginIO.write(newLogin);
     }
 
     // TODO: implement Password Generator / CSV write functionality
-    public void generatePassword() {
+    private void generatePassword() {
         String siteName = siteNamePrompt();
         String userName = userNamePrompt();
         String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
@@ -112,7 +114,7 @@ public class PasswordManager {
         getPrompter().info(LINE_SEPARATOR);
     }
 
-    private String printNumberPrompt(int max) {
+    private String promptNumberRange(int max) {
         String range = NUMBER_PROMPT_MIN + "-" + max;
         String userPrompt = PrompterConstants.NUMBER_PROMPT + range + ": ";
         // number within range
@@ -120,7 +122,7 @@ public class PasswordManager {
         return getPrompter().prompt(userPrompt, regex, PrompterConstants.NUMBER_ERROR);
     }
 
-    public Prompter getPrompter() {
+    private Prompter getPrompter() {
         return prompter;
     }
 }

@@ -126,8 +126,22 @@ public class PasswordManagerTest {
             assertNull(userNamePrompt);
             fail("Should throw exception");
         } catch(Exception e){
-            e.getMessage();
+            assertEquals("No line found", e.getMessage());
         }
+    }
 
+    @Test
+    public void prompter_shouldThrowException_whenInvalidSiteNameResponse() {
+        try {
+            Prompter prompter = new Prompter((new Scanner(new File("responses/invalidSiteNameResponses.txt"))));
+            String siteNamePrompt;
+
+            siteNamePrompt = prompter.prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+
+            assertNull(siteNamePrompt);
+            fail("Should throw exception");
+        } catch(Exception e){
+            assertEquals("No line found", e.getMessage());
+        }
     }
 }

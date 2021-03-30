@@ -1,4 +1,4 @@
-package com.teamfivetech.passwordmanager;
+package com.teamfivetech.passwordmanager.controller.core;
 
 import java.util.*;
 import java.util.concurrent.Callable;

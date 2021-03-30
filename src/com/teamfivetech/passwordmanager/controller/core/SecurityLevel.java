@@ -1,4 +1,4 @@
-package com.teamfivetech.passwordmanager;
+package com.teamfivetech.passwordmanager.controller.core;
 
 public enum SecurityLevel {
     // security levels with preset password lengths

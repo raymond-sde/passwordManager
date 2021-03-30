@@ -1,4 +1,4 @@
-package com.teamfivetech.passwordmanager;
+package com.teamfivetech.passwordmanager.controller;
 
 public class PrompterConstants {
     public static final String NUMBER_PROMPT = "Please enter a number ";

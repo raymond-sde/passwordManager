@@ -1,12 +1,16 @@
 package com.teamfivetech.passwordmanager;
 import com.apps.util.Prompter;
+
+import java.io.IOException;
 import java.util.*;
 
 public class PasswordManager {
     private static final String LINE_SEPARATOR = new String(new char[30]).replace("\0", "-");
     private static final int NUMBER_PROMPT_MIN = 1;
+    private static final String PW_FILE_PATH = "data/passwords.csv";
 
     private final Prompter prompter;
+    private CsvUtil csvUtil = new CsvUtil(PW_FILE_PATH);
 
     public PasswordManager(Prompter prompter) {
         this.prompter = prompter;
@@ -49,7 +53,15 @@ public class PasswordManager {
 
     // TODO: implement CSV read functionality
     public void listPasswords() {
-        getPrompter().info("listPasswords()");
+        List<Login> readLogins = null;
+        try {
+            readLogins = csvUtil.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (Login log : readLogins) {
+            getPrompter().info(log.toString());
+        }
     }
 
     private void thankUser() {

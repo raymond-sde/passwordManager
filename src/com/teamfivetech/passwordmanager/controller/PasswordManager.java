@@ -2,6 +2,8 @@ package com.teamfivetech.passwordmanager.controller;
 import com.apps.util.Prompter;
 import com.teamfivetech.passwordmanager.controller.core.LoginIO;
 import com.teamfivetech.passwordmanager.controller.core.Login;
+import com.teamfivetech.passwordmanager.controller.core.PasswordGenerator;
+import com.teamfivetech.passwordmanager.controller.core.SecurityLevel;
 
 import java.io.IOException;
 import java.util.*;
@@ -69,7 +71,6 @@ public class PasswordManager {
         getPrompter().info("Thank you for using Password Manager");
     }
 
-    // TODO: implement CSV write functionality.  NEEDS TESTING
     private void enterPassword() {
         String siteName = siteNamePrompt();
         String userName = userNamePrompt();
@@ -78,23 +79,21 @@ public class PasswordManager {
         loginIO.write(newLogin);
     }
 
-    // TODO: implement Password Generator / CSV write functionality
     private void generatePassword() {
         String siteName = siteNamePrompt();
         String userName = userNamePrompt();
         String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
 
-        // TODO: once Password Generator is implemented, uncomment and add generate password method to assign password field, create new login, and write new login.
-        /* String password = generatePassword(SecurityLevel.valueOf(securityLevel));
+        PasswordGenerator gen = new PasswordGenerator();
+        String password = gen.generate(SecurityLevel.valueOf(securityLevel.toUpperCase()));
         Login newLogin = new Login(siteName, userName, password);
-        csvUtil.write(newLogin);*/
+        loginIO.write(newLogin);
     }
 
-    // TODO: Test
     private String siteNamePrompt() {
         return getPrompter().prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
     }
-    //TODO: Test
+
     private String userNamePrompt() {
         return getPrompter().prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
 

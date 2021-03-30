@@ -18,6 +18,7 @@ class CsvUtil {
 
     public List<Login> read() throws IOException {
         List<Login> result = new ArrayList<>();
+        Login.setCounter(1);        // resets counter to 1 every time the file is read so the first Login is 1.
 
         Files.lines(pwFilePath).forEach(line -> {
             String[] logins = line.split(",");
@@ -34,12 +35,12 @@ class CsvUtil {
     public void write(List<Login> passwords) {
         try (PrintWriter out = new PrintWriter(new FileWriter(String.valueOf(pwFilePath)))) {
             for (Login login : passwords) {
+                String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
+                        + login.getPassword();
                 if (login.getId() < passwords.size()) {
-                    out.println(login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
-                            + login.getPassword());
+                    out.println(output);
                 } else{
-                    out.print(login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
-                            + login.getPassword());
+                    out.print(output);
                 }
             }
         } catch (IOException e) {

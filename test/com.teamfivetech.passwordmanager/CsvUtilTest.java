@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +68,7 @@ public class CsvUtilTest {
         }
     }
 
+    // writes two addition Logins to file, then reads whole file & confirms expected values.
     @Test
     public void write_shouldReturnTrue_whenNewLoginsAdded() {
         Login newLog1 = new Login("Google", "coolnamebro", "pass1234");
@@ -75,43 +77,46 @@ public class CsvUtilTest {
         logins.add(newLog2);
         csvUtil.write(logins);
 
+        List<Login> readLogins = new ArrayList<>();
+
+        try {
+            readLogins = csvUtil.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         assertEquals(4, logins.size());
 
-        Login log0 = logins.get(0);
+        Login log0 = readLogins.get(0);
         assertEquals(1, log0.getId());
         assertEquals("Reddit", log0.getSiteName());
         assertEquals("sethm", log0.getUserName());
         assertEquals("a1b2c3d4", log0.getPassword());
 
-        Login log1 = logins.get(1);
+        Login log1 = readLogins.get(1);
         assertEquals(2, log1.getId());
         assertEquals("YouTube", log1.getSiteName());
         assertEquals("coolnameguy", log1.getUserName());
         assertEquals("z1y2x3w4", log1.getPassword());
 
-        Login log2 = logins.get(2);
+        Login log2 = readLogins.get(2);
         assertEquals(3, log2.getId());
         assertEquals("Google", log2.getSiteName());
         assertEquals("coolnamebro", log2.getUserName());
         assertEquals("pass1234", log2.getPassword());
 
-        Login log3 = logins.get(3);
+        Login log3 = readLogins.get(3);
         assertEquals(4, log3.getId());
         assertEquals("Facebook", log3.getSiteName());
         assertEquals("MusicMan87", log3.getUserName());
         assertEquals("1234pass", log3.getPassword());
-
-        // remove added values for future testing
-        logins.remove(log2);
-        logins.remove(log3);
-        csvUtil.write(logins);
     }
 
-    @Test
+    // test expected exception when file does not exist
+    @Test(expected = NoSuchFileException.class)
     public void read_shouldThrowException_whenBadFilenamePassed() throws Exception{
         CsvUtil badUtil = new CsvUtil("bad/input.csv");
-        logins = csvUtil.read();
-
+        logins = badUtil.read();
     }
 
     // wipe the test file after each test

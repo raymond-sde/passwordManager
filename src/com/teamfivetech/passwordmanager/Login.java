@@ -19,6 +19,14 @@ public class Login {
     }
 
     // accessors
+    private static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Login.counter = counter;
+    }
+
     public int getId() {
         return id;
     }

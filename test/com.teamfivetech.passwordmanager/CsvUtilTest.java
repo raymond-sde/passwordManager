@@ -70,13 +70,17 @@ public class CsvUtilTest {
 
     // writes two addition Logins to file, then reads whole file & confirms expected values.
     @Test
-    public void write_shouldReturnTrue_whenNewLoginsAdded() throws Exception {
+    public void write_shouldReturnTrue_whenNewLoginsAdded() {
         Login newLog1 = new Login("Google", "coolnamebro", "pass1234");
         Login newLog2 = new Login("Facebook", "MusicMan87", "1234pass");
         csvUtil.write(newLog1);
         csvUtil.write(newLog2);
 
-        logins = csvUtil.read();
+        try {
+            logins = csvUtil.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         assertEquals(4, logins.size());
 
@@ -113,8 +117,8 @@ public class CsvUtilTest {
     }
 
     // wipe the test file after each test
-   /* @AfterClass
+    @AfterClass
     public static void afterClass() throws Exception {
         FileWriter fw = new FileWriter(TEST_FILE, false);
-    }*/
+    }
 }

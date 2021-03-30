@@ -11,8 +11,10 @@ import java.util.List;
 
 class CsvUtil {
     private Path pwFilePath;
+    private String pwFile;
 
     public CsvUtil(String pwFilePath) {
+        this.pwFile = pwFilePath;
         this.pwFilePath = Path.of(pwFilePath);
     }
 
@@ -32,20 +34,13 @@ class CsvUtil {
         return result;
     }
 
-    public void write(List<Login> passwords) {
-        try (PrintWriter out = new PrintWriter(new FileWriter(String.valueOf(pwFilePath)))) {
-            for (Login login : passwords) {
-                String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
-                        + login.getPassword();
-                if (login.getId() < passwords.size()) {
-                    out.println(output);
-                } else{
-                    out.print(output);
-                }
-            }
+    public void write(Login login) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(pwFile, true))) {
+            String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
+                                + login.getPassword();
+            out.println(output);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

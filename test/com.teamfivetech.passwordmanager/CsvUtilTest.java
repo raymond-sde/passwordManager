@@ -73,39 +73,36 @@ public class CsvUtilTest {
     public void write_shouldReturnTrue_whenNewLoginsAdded() {
         Login newLog1 = new Login("Google", "coolnamebro", "pass1234");
         Login newLog2 = new Login("Facebook", "MusicMan87", "1234pass");
-        logins.add(newLog1);
-        logins.add(newLog2);
-        csvUtil.write(logins);
-
-        List<Login> readLogins = new ArrayList<>();
+        csvUtil.write(newLog1);
+        csvUtil.write(newLog2);
 
         try {
-            readLogins = csvUtil.read();
+            logins = csvUtil.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         assertEquals(4, logins.size());
 
-        Login log0 = readLogins.get(0);
+        Login log0 = logins.get(0);
         assertEquals(1, log0.getId());
         assertEquals("Reddit", log0.getSiteName());
         assertEquals("sethm", log0.getUserName());
         assertEquals("a1b2c3d4", log0.getPassword());
 
-        Login log1 = readLogins.get(1);
+        Login log1 = logins.get(1);
         assertEquals(2, log1.getId());
         assertEquals("YouTube", log1.getSiteName());
         assertEquals("coolnameguy", log1.getUserName());
         assertEquals("z1y2x3w4", log1.getPassword());
 
-        Login log2 = readLogins.get(2);
+        Login log2 = logins.get(2);
         assertEquals(3, log2.getId());
         assertEquals("Google", log2.getSiteName());
         assertEquals("coolnamebro", log2.getUserName());
         assertEquals("pass1234", log2.getPassword());
 
-        Login log3 = readLogins.get(3);
+        Login log3 = logins.get(3);
         assertEquals(4, log3.getId());
         assertEquals("Facebook", log3.getSiteName());
         assertEquals("MusicMan87", log3.getUserName());

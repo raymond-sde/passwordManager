@@ -94,7 +94,7 @@ public class PasswordManager {
     }
     //TODO: Test
     private String userNamePrompt() {
-        return getPrompter().prompt(PrompterConstants.USER_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+        return getPrompter().prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
 
     }
 

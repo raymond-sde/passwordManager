@@ -90,13 +90,13 @@ public class PasswordManagerTest {
         Prompter prompter = new Prompter(new Scanner(new File("responses/validUserNameResponse.txt")));
         String userNamePrompt;
 
-        userNamePrompt = prompter.prompt(PrompterConstants.USER_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
         assertEquals("CoolUserName", userNamePrompt);
 
-        userNamePrompt = prompter.prompt(PrompterConstants.USER_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
         assertEquals("FunUserName", userNamePrompt);
 
-        userNamePrompt = prompter.prompt(PrompterConstants.USER_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
         assertEquals("GoodUserName", userNamePrompt);
     }
 
@@ -121,7 +121,7 @@ public class PasswordManagerTest {
             Prompter prompter = new Prompter((new Scanner(new File("responses/invalidUserNameResponses.txt"))));
             String userNamePrompt;
 
-            userNamePrompt = prompter.prompt(PrompterConstants.USER_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+            userNamePrompt = prompter.prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
 
             assertNull(userNamePrompt);
             fail("Should throw exception");

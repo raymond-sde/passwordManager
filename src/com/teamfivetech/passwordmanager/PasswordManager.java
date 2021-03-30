@@ -51,7 +51,7 @@ public class PasswordManager {
         }
     }
 
-    // TODO: implement CSV read functionality
+    // TODO: implement CSV read functionality. NEEDS TESTING
     public void listPasswords() {
         List<Login> readLogins = null;
         try {
@@ -70,6 +70,10 @@ public class PasswordManager {
 
     // TODO: implement CSV write functionality
     public void enterPassword() {
+        String siteName = siteNamePrompt();
+        String userName = userNamePrompt();
+        String password = getPrompter().prompt("Enter new password: ");
+        Login newLogin = new Login(siteName, userName, password );
         getPrompter().info("enterNewPassword()");
     }
 
@@ -77,6 +81,16 @@ public class PasswordManager {
     public void generatePassword() {
         String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         getPrompter().info("Selected: " + securityLevel);
+    }
+
+    private String siteNamePrompt() {
+        String siteName = getPrompter().prompt("Enter new site name: ");
+        return siteName;
+    }
+
+    private String userNamePrompt() {
+        String userName = getPrompter().prompt("Enter new user name: ");
+        return userName;
     }
 
     private void printMenu(String title, List<String> menuOptions) {

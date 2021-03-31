@@ -60,7 +60,7 @@ public class PasswordManager {
         try {
             readLogins = loginIO.read();
         } catch (IOException e) {
-            e.getMessage();
+            getPrompter().info(PrompterConstants.READ_FAIL + e.getMessage());
         }
         for (Login log : readLogins) {
             getPrompter().info(log.toString());
@@ -80,7 +80,7 @@ public class PasswordManager {
             loginIO.write(newLogin);
             getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
         } catch (IOException e) {
-            getPrompter().info(e.getMessage());
+            getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class PasswordManager {
             loginIO.write(newLogin);
             getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
         } catch (IOException e) {
-            getPrompter().info(e.getMessage());
+            getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
         }
     }
 

@@ -9,7 +9,6 @@ import org.junit.Test;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -117,16 +116,18 @@ public class LoginIOTest {
     }
 
     // test expected exception when file does not exist
-    @Test
+    @Test(expected = IOException.class)
     public void read_shouldThrowException_whenBadFilenamePassed() throws Exception{
-        try {
-            LoginIO badUtil = new LoginIO("bad/input.csv");
-            logins = badUtil.read();
-            fail("Should have thrown Exception");
-        }
-        catch (IOException e){
-            assertEquals("passwords.csv file not found to read", e.getMessage());
-        }
+        LoginIO badUtil = new LoginIO("bad/input.csv");
+        logins = badUtil.read();
+        fail("Should have thrown Exception");
+    }
+
+    @Test(expected = IOException.class)
+    public void write_shouldThrowException_whenBadFileNamePassed() throws Exception{
+        LoginIO badUtil = new LoginIO("bad/input.csv");
+        logins = badUtil.read();
+        fail("Should have thrown Exception");
     }
 
     // wipe the test file after each test

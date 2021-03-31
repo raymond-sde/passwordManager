@@ -17,18 +17,13 @@ public class PasswordGenerator {
     // Allowed symbols in password
     private static final String SYMBOLS = "!@#$%^&*()";
     private static final Random rand = new Random();
-    // HashMap keys for invoking corresponding methods
-    private static final String GET_RANDOM_LOWER = "getRandomLower";
-    private static final String GET_RANDOM_UPPER = "getRandomUpper";
-    private static final String GET_RANDOM_NUMBER = "getRandomNumber";
-    private static final String GET_RANDOM_SYMBOL = "getRandomSymbol";
 
     // Store generate methods in HashMap for easy filtering and invoking within an iteration
     private final Map<String, Callable<String>> generateActions = new HashMap<>() {{
-        put(GET_RANDOM_LOWER, () -> getRandomLower());
-        put(GET_RANDOM_UPPER, () -> getRandomUpper());
-        put(GET_RANDOM_NUMBER, () -> getRandomNumber());
-        put(GET_RANDOM_SYMBOL, () -> getRandomSymbol());
+        put(PasswordConstants.GET_RANDOM_LOWER, () -> getRandomLower());
+        put(PasswordConstants.GET_RANDOM_UPPER, () -> getRandomUpper());
+        put(PasswordConstants.GET_RANDOM_NUMBER, () -> getRandomNumber());
+        put(PasswordConstants.GET_RANDOM_SYMBOL, () -> getRandomSymbol());
     }};
 
     /**
@@ -41,29 +36,46 @@ public class PasswordGenerator {
         switch (securityLevel) {
             // 8 length, 4 upper, 4 lower
             case LOW:
-                actions.add(GET_RANDOM_UPPER);
-                actions.add(GET_RANDOM_LOWER);
+                actions.add(PasswordConstants.GET_RANDOM_UPPER);
+                actions.add(PasswordConstants.GET_RANDOM_LOWER);
                 result = generateByLengthActions(securityLevel.getPasswordLength(), actions);
                 break;
             // 12 length, 4 upper, 4 lower, 4 number
             case MEDIUM:
-                actions.add(GET_RANDOM_UPPER);
-                actions.add(GET_RANDOM_LOWER);
-                actions.add(GET_RANDOM_NUMBER);
+                actions.add(PasswordConstants.GET_RANDOM_UPPER);
+                actions.add(PasswordConstants.GET_RANDOM_LOWER);
+                actions.add(PasswordConstants.GET_RANDOM_NUMBER);
                 result = generateByLengthActions(securityLevel.getPasswordLength(), actions);
                 break;
             // 16 length, 4 upper, 4 lower, 4 number, 4 symbol
             case HIGH:
-                actions.add(GET_RANDOM_UPPER);
-                actions.add(GET_RANDOM_LOWER);
-                actions.add(GET_RANDOM_NUMBER);
-                actions.add(GET_RANDOM_SYMBOL);
+                actions.add(PasswordConstants.GET_RANDOM_UPPER);
+                actions.add(PasswordConstants.GET_RANDOM_LOWER);
+                actions.add(PasswordConstants.GET_RANDOM_NUMBER);
+                actions.add(PasswordConstants.GET_RANDOM_SYMBOL);
                 result = generateByLengthActions(securityLevel.getPasswordLength(), actions);
                 break;
             default:
                 System.out.println("Invalid security level");
         }
         return result;
+    }
+
+    /**
+     * Generates a password based on custom user preferences of desired length, uppercase, lowercase, number, symbol
+     */
+    public String generate(int length, Map<String,Boolean> generateOptions) {
+        Map<String,Boolean> options = generateOptions.entrySet().stream()
+                .filter(Map.Entry::getValue)
+                .collect(Collectors.toMap(Map.Entry::getKey, stringBooleanEntry -> true));
+
+        List<String> actions = new ArrayList<>(options.keySet());
+
+        String password = generateByLengthActions(length, actions);
+        // Trim any remaining characters that exceed desired length
+        password = password.substring(0, Math.min(password.length(), length));
+
+        return password;
     }
 
     /**

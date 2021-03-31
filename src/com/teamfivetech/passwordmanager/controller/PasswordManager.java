@@ -115,7 +115,22 @@ public class PasswordManager {
     }
 
     private String generateCustomPassword() {
-        return "";
+        int length = Integer.parseInt(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LENGTH));
+        boolean hasUpper = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_UPPER));
+        boolean hasLower = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LOWER));
+        boolean hasNumber = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_NUMBER));
+        boolean hasSymbol = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_SYMBOL));
+
+        Map<String,Boolean> generateOptions = new HashMap<>() {{
+            put(PasswordConstants.GET_RANDOM_UPPER, hasUpper);
+            put(PasswordConstants.GET_RANDOM_LOWER, hasLower);
+            put(PasswordConstants.GET_RANDOM_NUMBER, hasNumber);
+            put(PasswordConstants.GET_RANDOM_SYMBOL, hasSymbol);
+        }};
+
+        PasswordGenerator gen = new PasswordGenerator();
+        String password = gen.generate(length, generateOptions);
+        return password;
     }
 
     private String siteNamePrompt() {

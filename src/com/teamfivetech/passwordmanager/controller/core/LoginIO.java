@@ -12,6 +12,8 @@ import java.util.List;
 public class LoginIO {
     private String pwFile;
 
+    Base64EncoderDecoder encoder = new Base64EncoderDecoder();
+
     public LoginIO(String pwFilePath) {
         this.pwFile = pwFilePath;
     }
@@ -24,7 +26,7 @@ public class LoginIO {
 
             String siteName = logins[1];
             String userName = logins[2];
-            String password = logins[3];
+            String password = new String(encoder.decode(logins[3]));
 
             result.add(new Login(siteName, userName, password));
         });
@@ -33,8 +35,9 @@ public class LoginIO {
 
     public void write(Login login) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(pwFile, true))) {
+            byte[] passwordByte = login.getPassword().getBytes();
             String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
-                    + login.getPassword();
+                    + encoder.encode(passwordByte);
             out.println(output);
         }
         catch (IOException e){

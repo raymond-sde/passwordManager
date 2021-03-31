@@ -40,7 +40,10 @@ public class PasswordManager {
         String password = getPasswordFromPrompt();
 
         // User selected cancel, return user to main menu
-        if ("".equals(password)) return;
+        if ("".equals(password)) {
+            getPrompter().info(PrompterConstants.PW_CANCEL_MSG);
+            return;
+        }
 
         Login newLogin = new Login(siteName, userName, password );
 

@@ -21,4 +21,5 @@ public class PrompterConstants {
     public static final String CUSTOM_PW_PROMPT_LOWER = "Include lowercase letters? (Y/N): ";
     public static final String CUSTOM_PW_PROMPT_NUMBER = "Include numbers? (Y/N): ";
     public static final String CUSTOM_PW_PROMPT_SYMBOL = "Include symbols? (Y/N): ";
+    public static final String PW_CANCEL_MSG = "No password has been entered";
 }

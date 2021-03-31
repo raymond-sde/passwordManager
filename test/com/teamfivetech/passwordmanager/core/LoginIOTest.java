@@ -133,8 +133,8 @@ public class LoginIOTest {
     }
 
     // wipe the test file after each test
-    /*@AfterClass
+    @AfterClass
     public static void afterClass() throws Exception {
         FileWriter fw = new FileWriter(TEST_FILE, false);
-    }*/
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class LoginIO {
     private String pwFile;
 
-    Base64EncoderDecoder encoder = new Base64EncoderDecoder();
+    private Base64EncoderDecoder encoder = new Base64EncoderDecoder();
 
     public LoginIO(String pwFilePath) {
         this.pwFile = pwFilePath;

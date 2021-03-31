@@ -1,4 +1,4 @@
-package com.teamfivetech.passwordmanager.controller.client;
+package com.teamfivetech.passwordmanager.client;
 import com.apps.util.Prompter;
 import com.teamfivetech.passwordmanager.controller.PasswordManager;
 

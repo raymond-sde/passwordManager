@@ -1,7 +1,7 @@
-package com.teamfivetech.passwordmanager.controller;
+package com.teamfivetech.passwordmanager.core;
 
-import com.teamfivetech.passwordmanager.controller.core.LoginIO;
-import com.teamfivetech.passwordmanager.controller.core.Login;
+import com.teamfivetech.passwordmanager.core.LoginIO;
+import com.teamfivetech.passwordmanager.core.Login;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;

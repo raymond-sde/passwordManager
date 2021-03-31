@@ -12,4 +12,5 @@ public class PrompterConstants {
     public static final String VALID_RESPONSE_REGEX = "^[a-zA-Z0-9!@#$%^&*().]+$";
     public static final String EMPTY_SITE_NAME_ERROR = "Site name is blank or has invalid characters";
     public static final String EMPTY_USERNAME_ERROR = "Username is blank or has invalid characters";
+    public static final String WRITE_SUCCESS = "New Login successfully saved for: ";
 }

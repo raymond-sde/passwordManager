@@ -60,7 +60,7 @@ public class PasswordManager {
         try {
             readLogins = loginIO.read();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         for (Login log : readLogins) {
             getPrompter().info(log.toString());
@@ -76,18 +76,27 @@ public class PasswordManager {
         String userName = userNamePrompt();
         String password = getPrompter().prompt("Enter new password: ");
         Login newLogin = new Login(siteName, userName, password );
-        loginIO.write(newLogin);
+        try {
+            loginIO.write(newLogin);
+            getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
+        } catch (IOException e) {
+            e.getMessage();
+        }
     }
 
     private void generatePassword() {
         String siteName = siteNamePrompt();
         String userName = userNamePrompt();
         String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
-
         PasswordGenerator gen = new PasswordGenerator();
         String password = gen.generate(SecurityLevel.valueOf(securityLevel.toUpperCase()));
         Login newLogin = new Login(siteName, userName, password);
-        loginIO.write(newLogin);
+        try {
+            loginIO.write(newLogin);
+            getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
+        } catch (IOException e) {
+            e.getMessage();
+        }
     }
 
     private String siteNamePrompt() {

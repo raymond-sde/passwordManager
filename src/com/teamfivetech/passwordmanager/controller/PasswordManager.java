@@ -65,9 +65,10 @@ public class PasswordManager {
         if (readLogins.size() == 0) {
             getPrompter().info(LINE_SEPARATOR);
             getPrompter().info(PrompterConstants.READ_FILE_EMPTY);
-        }
-        for (Login log : readLogins) {
-            getPrompter().info(log.toString());
+        }else {
+            for (Login log : readLogins) {
+                getPrompter().info(log.toString());
+            }
         }
     }
 
@@ -104,11 +105,11 @@ public class PasswordManager {
     }
 
     private String siteNamePrompt() {
-        return getPrompter().prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        return getPrompter().prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
     }
 
     private String userNamePrompt() {
-        return getPrompter().prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+        return getPrompter().prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
 
     }
 

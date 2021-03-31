@@ -15,4 +15,5 @@ public class PrompterConstants {
     public static final String WRITE_SUCCESS = "New Login successfully saved for: ";
     public static final String WRITE_FAIL = "New Login creation failed: ";
     public static final String READ_FAIL = "Password retrieval failed: ";
+    public static final String READ_FILE_EMPTY = "There are no Logins currently stored in Password Manager";
 }

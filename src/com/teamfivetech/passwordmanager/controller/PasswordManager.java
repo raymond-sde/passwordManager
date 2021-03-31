@@ -62,6 +62,10 @@ public class PasswordManager {
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.READ_FAIL + e.getMessage());
         }
+        if (readLogins.size() == 0) {
+            getPrompter().info(LINE_SEPARATOR);
+            getPrompter().info(PrompterConstants.READ_FILE_EMPTY);
+        }
         for (Login log : readLogins) {
             getPrompter().info(log.toString());
         }

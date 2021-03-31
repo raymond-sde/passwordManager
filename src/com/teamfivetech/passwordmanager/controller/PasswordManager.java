@@ -80,7 +80,7 @@ public class PasswordManager {
             loginIO.write(newLogin);
             getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
         } catch (IOException e) {
-            e.getMessage();
+            getPrompter().info(e.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class PasswordManager {
             loginIO.write(newLogin);
             getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
         } catch (IOException e) {
-            e.getMessage();
+            getPrompter().info(e.getMessage());
         }
     }
 

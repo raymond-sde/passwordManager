@@ -46,6 +46,7 @@ public class PasswordManager {
 
         try {
             loginIO.write(newLogin);
+            getPrompter().info(LINE_SEPARATOR);
             getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());

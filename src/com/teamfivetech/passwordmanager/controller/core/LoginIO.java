@@ -40,9 +40,13 @@ public class LoginIO {
     }
 
     public void write(Login login) throws IOException {
-        PrintWriter out = new PrintWriter(new FileWriter(pwFile, true));
-        String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
-                + login.getPassword();
-        out.println(output);
+        try (PrintWriter out = new PrintWriter(new FileWriter(pwFile, true))) {
+            String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
+                    + login.getPassword();
+            out.println(output);
+        }
+        catch (IOException e){
+            throw new IOException("passwords.csv file not found");
+        }
     }
 }

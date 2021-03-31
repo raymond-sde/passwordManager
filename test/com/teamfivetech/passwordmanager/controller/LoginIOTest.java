@@ -117,10 +117,16 @@ public class LoginIOTest {
     }
 
     // test expected exception when file does not exist
-    @Test(expected = IOException.class)
+    @Test
     public void read_shouldThrowException_whenBadFilenamePassed() throws Exception{
-        LoginIO badUtil = new LoginIO("bad/input.csv");
-        logins = badUtil.read();
+        try {
+            LoginIO badUtil = new LoginIO("bad/input.csv");
+            logins = badUtil.read();
+            fail("Should have thrown Exception");
+        }
+        catch (IOException e){
+            assertEquals("passwords.csv file not found to read", e.getMessage());
+        }
     }
 
     // wipe the test file after each test

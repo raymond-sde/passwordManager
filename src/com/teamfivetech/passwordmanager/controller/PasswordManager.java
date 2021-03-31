@@ -1,9 +1,6 @@
 package com.teamfivetech.passwordmanager.controller;
 import com.apps.util.Prompter;
-import com.teamfivetech.passwordmanager.controller.core.LoginIO;
-import com.teamfivetech.passwordmanager.controller.core.Login;
-import com.teamfivetech.passwordmanager.controller.core.PasswordGenerator;
-import com.teamfivetech.passwordmanager.controller.core.SecurityLevel;
+import com.teamfivetech.passwordmanager.controller.core.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -31,31 +28,65 @@ public class PasswordManager {
             printMenu("main menu", menuOptions);
             selection = promptNumberRange(3);
 
-            if ("1".equals(selection)) storePassword();
-            if ("2".equals(selection)) listPasswords();
+            if ("1".equals(selection)) storeLogin();
+            if ("2".equals(selection)) listLogins();
             if ("3".equals(selection)) thankUser();
         }
     }
 
-    private void storePassword() {
+    private void storeLogin() {
+        String siteName = siteNamePrompt();
+        String userName = userNamePrompt();
+        String password = getPasswordFromPrompt();
+
+        // User selected cancel, return user to main menu
+        if ("".equals(password)) return;
+
+        Login newLogin = new Login(siteName, userName, password );
+
+        try {
+            loginIO.write(newLogin);
+            getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
+        } catch (IOException e) {
+            getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
+        }
+    }
+
+    private String getPasswordFromPrompt() {
         String selection;
-        List<String> menuOptions = Arrays.asList("Enter New Password", "Generate New Password", "Back to Main Menu", "Quit");
+        List<String> menuOptions = Arrays.asList("Enter New Password", "Easy Generate Password", "Custom Generate Password", "Cancel", "Quit");
+        String password = "";
 
-        while (true) {
-            printMenu("store password", menuOptions);
-            selection = promptNumberRange(4);
+        while(true) {
+            printMenu("password options", menuOptions);
+            selection = promptNumberRange(5);
 
-            if ("1".equals(selection)) enterPassword();
-            if ("2".equals(selection)) generatePassword();
-            if ("3".equals(selection)) break;
-            if ("4".equals(selection)) {
+            if ("1".equals(selection)) {
+                password = getPrompter().prompt("Enter new password: ");
+                break;
+            }
+
+            if ("2".equals(selection)) {
+                password = generatePasswordFromSecurityLevel();
+                break;
+            }
+
+            if ("3".equals(selection)) {
+                password = generateCustomPassword();
+                break;
+            }
+
+            if ("4".equals(selection)) break;
+
+            if ("5".equals(selection)) {
                 thankUser();
                 System.exit(0);
             }
         }
+        return password;
     }
 
-    private void listPasswords() {
+    private void listLogins() {
         List<Login> readLogins = null;
         try {
             readLogins = loginIO.read();
@@ -76,34 +107,15 @@ public class PasswordManager {
         getPrompter().info("Thank you for using Password Manager");
     }
 
-    private void enterPassword() {
-        String siteName = siteNamePrompt();
-        String userName = userNamePrompt();
-        String password = getPrompter().prompt("Enter new password: ");
-        Login newLogin = new Login(siteName, userName, password );
-        try {
-            loginIO.write(newLogin);
-            getPrompter().info(LINE_SEPARATOR);
-            getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
-        } catch (IOException e) {
-            getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
-        }
-    }
-
-    private void generatePassword() {
-        String siteName = siteNamePrompt();
-        String userName = userNamePrompt();
+    private String generatePasswordFromSecurityLevel() {
         String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         PasswordGenerator gen = new PasswordGenerator();
         String password = gen.generate(SecurityLevel.valueOf(securityLevel.toUpperCase()));
-        Login newLogin = new Login(siteName, userName, password);
-        try {
-            loginIO.write(newLogin);
-            getPrompter().info(LINE_SEPARATOR);
-            getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
-        } catch (IOException e) {
-            getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
-        }
+        return password;
+    }
+
+    private String generateCustomPassword() {
+        return "";
     }
 
     private String siteNamePrompt() {

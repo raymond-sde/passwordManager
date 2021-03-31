@@ -25,7 +25,7 @@ public class PasswordManager {
         getPrompter().info("Welcome to Password Manager");
 
         String selection = null;
-        List<String> menuOptions = Arrays.asList("Store Password", "List Passwords", "Quit");
+        List<String> menuOptions = Arrays.asList("Store Login", "List Logins", "Quit");
 
         while(!"3".equals(selection)) {
             printMenu("main menu", menuOptions);

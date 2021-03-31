@@ -25,7 +25,7 @@ public class PasswordManager {
         getPrompter().info("Welcome to Password Manager");
 
         String selection = null;
-        List<String> menuOptions = Arrays.asList("Store Password", "List Passwords", "Quit");
+        List<String> menuOptions = Arrays.asList("Store Login", "List Logins", "Quit");
 
         while(!"3".equals(selection)) {
             printMenu("main menu", menuOptions);
@@ -62,8 +62,13 @@ public class PasswordManager {
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.READ_FAIL + e.getMessage());
         }
-        for (Login log : readLogins) {
-            getPrompter().info(log.toString());
+        if (readLogins.size() == 0) {
+            getPrompter().info(LINE_SEPARATOR);
+            getPrompter().info(PrompterConstants.READ_FILE_EMPTY);
+        }else {
+            for (Login log : readLogins) {
+                getPrompter().info(log.toString());
+            }
         }
     }
 
@@ -78,7 +83,8 @@ public class PasswordManager {
         Login newLogin = new Login(siteName, userName, password );
         try {
             loginIO.write(newLogin);
-            getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
+            getPrompter().info(LINE_SEPARATOR);
+            getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
         }
@@ -93,18 +99,19 @@ public class PasswordManager {
         Login newLogin = new Login(siteName, userName, password);
         try {
             loginIO.write(newLogin);
-            getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
+            getPrompter().info(LINE_SEPARATOR);
+            getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
         }
     }
 
     private String siteNamePrompt() {
-        return getPrompter().prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
+        return getPrompter().prompt(PrompterConstants.SITE_NAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
     }
 
     private String userNamePrompt() {
-        return getPrompter().prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_SITE_NAME_ERROR);
+        return getPrompter().prompt(PrompterConstants.USERNAME_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_USERNAME_ERROR);
 
     }
 

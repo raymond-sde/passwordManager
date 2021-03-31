@@ -12,7 +12,8 @@ public class PrompterConstants {
     public static final String VALID_RESPONSE_REGEX = "^[a-zA-Z0-9!@#$%^&*().]+$";
     public static final String EMPTY_SITE_NAME_ERROR = "Site name is blank or has invalid characters";
     public static final String EMPTY_USERNAME_ERROR = "Username is blank or has invalid characters";
-    public static final String WRITE_SUCCESS = "New Login successfully saved for: ";
+    public static final String WRITE_SUCCESS = "New Login successfully saved: ";
     public static final String WRITE_FAIL = "New Login creation failed: ";
     public static final String READ_FAIL = "Password retrieval failed: ";
+    public static final String READ_FILE_EMPTY = "There are no Logins currently stored in Password Manager";
 }

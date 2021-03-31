@@ -1,6 +1,6 @@
 package com.teamfivetech.passwordmanager.controller;
 import com.apps.util.Prompter;
-import com.teamfivetech.passwordmanager.controller.core.*;
+import com.teamfivetech.passwordmanager.core.*;
 
 import java.io.IOException;
 import java.util.*;

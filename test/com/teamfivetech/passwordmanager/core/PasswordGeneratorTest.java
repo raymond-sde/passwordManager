@@ -1,4 +1,4 @@
-package com.teamfivetech.passwordmanager.controller.core;
+package com.teamfivetech.passwordmanager.core;
 
 import org.junit.Before;
 import org.junit.Test;

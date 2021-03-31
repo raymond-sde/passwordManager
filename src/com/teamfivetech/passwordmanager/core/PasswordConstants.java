@@ -1,4 +1,4 @@
-package com.teamfivetech.passwordmanager.controller.core;
+package com.teamfivetech.passwordmanager.core;
 
 public class PasswordConstants {
     // HashMap keys for invoking corresponding methods

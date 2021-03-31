@@ -46,6 +46,7 @@ public class PasswordManager {
 
         try {
             loginIO.write(newLogin);
+            getPrompter().info(LINE_SEPARATOR);
             getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
@@ -61,29 +62,24 @@ public class PasswordManager {
             printMenu("password options", menuOptions);
             selection = promptNumberRange(5);
 
-            if ("1".equals(selection)) {
-                password = getPrompter().prompt("Enter new password: ");
-                break;
+            switch (selection) {
+                case "1":
+                    password = getPrompter().prompt("Enter new password: ");
+                    break;
+                case "2":
+                    password = generatePasswordFromSecurityLevel();
+                    break;
+                case "3":
+                    password = generateCustomPassword();
+                    break;
+                case"4":
+                    break;
+                case "5":
+                    thankUser();
+                    System.exit(0);
             }
-
-            if ("2".equals(selection)) {
-                password = generatePasswordFromSecurityLevel();
-                break;
-            }
-
-            if ("3".equals(selection)) {
-                password = generateCustomPassword();
-                break;
-            }
-
-            if ("4".equals(selection)) break;
-
-            if ("5".equals(selection)) {
-                thankUser();
-                System.exit(0);
-            }
-        }
         return password;
+        }
     }
 
     private void listLogins() {

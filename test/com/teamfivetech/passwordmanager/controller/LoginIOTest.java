@@ -9,13 +9,12 @@ import org.junit.Test;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class LoginIOTest {
-    private static final String TEST_FILE = "data/CsvUtilTest.csv";
+    private static final String TEST_FILE = "data/LoginIOTest.csv";
     private LoginIO loginIO = null;
     private List<Login> logins = null;
 
@@ -60,7 +59,6 @@ public class LoginIOTest {
         logins.clear();     // mimics empty file passed to reader.
         assertEquals(0, logins.size());
 
-        // insert two existing Logins for testing
         try {
             Login log0 = logins.get(0);
             fail("Should have returned IndexOutOfBoundsException");
@@ -74,13 +72,20 @@ public class LoginIOTest {
     public void write_shouldReturnTrue_whenNewLoginsAdded() {
         Login newLog1 = new Login("Google", "coolnamebro", "pass1234");
         Login newLog2 = new Login("Facebook", "MusicMan87", "1234pass");
-        loginIO.write(newLog1);
-        loginIO.write(newLog2);
+
+        try {
+            loginIO.write(newLog1);
+            loginIO.write(newLog2);
+        } catch (IOException e) {
+            String msg = e.getMessage();
+            System.out.println(msg);
+        }
 
         try {
             logins = loginIO.read();
         } catch (IOException e) {
-            e.printStackTrace();
+            String msg = e.getMessage();
+            System.out.println(msg);
         }
 
         assertEquals(4, logins.size());
@@ -111,10 +116,18 @@ public class LoginIOTest {
     }
 
     // test expected exception when file does not exist
-    @Test(expected = NoSuchFileException.class)
+    @Test(expected = IOException.class)
     public void read_shouldThrowException_whenBadFilenamePassed() throws Exception{
         LoginIO badUtil = new LoginIO("bad/input.csv");
         logins = badUtil.read();
+        fail("Should have thrown Exception");
+    }
+
+    @Test(expected = IOException.class)
+    public void write_shouldThrowException_whenBadFileNamePassed() throws Exception{
+        LoginIO badUtil = new LoginIO("bad/input.csv");
+        logins = badUtil.read();
+        fail("Should have thrown Exception");
     }
 
     // wipe the test file after each test

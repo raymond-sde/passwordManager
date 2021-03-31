@@ -83,7 +83,8 @@ public class PasswordManager {
         Login newLogin = new Login(siteName, userName, password );
         try {
             loginIO.write(newLogin);
-            getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
+            getPrompter().info(LINE_SEPARATOR);
+            getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
         }
@@ -98,7 +99,8 @@ public class PasswordManager {
         Login newLogin = new Login(siteName, userName, password);
         try {
             loginIO.write(newLogin);
-            getPrompter().info(PrompterConstants.WRITE_SUCCESS + newLogin.getSiteName());
+            getPrompter().info(LINE_SEPARATOR);
+            getPrompter().info(PrompterConstants.WRITE_SUCCESS + "\nSite name: " + siteName + "\nUsername: " + userName + "\nPassword: " + password);
         } catch (IOException e) {
             getPrompter().info(PrompterConstants.WRITE_FAIL + e.getMessage());
         }

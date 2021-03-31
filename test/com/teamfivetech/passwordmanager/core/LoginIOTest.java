@@ -22,8 +22,10 @@ public class LoginIOTest {
     public void setUp() throws Exception {
         loginIO = new LoginIO(TEST_FILE);
         try(PrintWriter out = new PrintWriter(new FileWriter(TEST_FILE))) {
-            out.println("1,Reddit,sethm,a1b2c3d4");
-            out.println("2,YouTube,coolnameguy,z1y2x3w4");
+            Login login1 = new Login("Reddit", "sethm", "a1b2c3d4");
+            Login login2 = new Login("YouTube", "coolnameguy", "z1y2x3w4");
+            loginIO.write(login1);
+            loginIO.write(login2);
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -131,8 +133,8 @@ public class LoginIOTest {
     }
 
     // wipe the test file after each test
-    @AfterClass
+    /*@AfterClass
     public static void afterClass() throws Exception {
         FileWriter fw = new FileWriter(TEST_FILE, false);
-    }
+    }*/
 }

@@ -54,17 +54,16 @@ public class PasswordGeneratorTest {
     @Test
     public void generate_shouldReturnCustomPassword_whenValidLengthWithAllOptions() {
         Map<String,Boolean> generateOptions = new HashMap<>() {{
-            put(PasswordConstants.GET_RANDOM_UPPER, true);
-            put(PasswordConstants.GET_RANDOM_LOWER, true);
-            put(PasswordConstants.GET_RANDOM_NUMBER, true);
-            put(PasswordConstants.GET_RANDOM_SYMBOL, true);
+            put(PasswordGenerator.GET_RANDOM_UPPER, true);
+            put(PasswordGenerator.GET_RANDOM_LOWER, true);
+            put(PasswordGenerator.GET_RANDOM_NUMBER, true);
+            put(PasswordGenerator.GET_RANDOM_SYMBOL, true);
         }};
 
         for (int i = 0; i < 5; i++) {
             Random random = new Random();
             // random number between 4 - 50 inclusive
-            int length = random.nextInt(20 - 4 + 1) + 4;
-
+            int length = random.nextInt(50 - 4 + 1) + 4;
             // n length, at least 1 upper, 1 lower, 1 number, 1 symbol in any order
             String regex = "^(?=(.*[A-Z])+)(?=(.*[a-z])+)(?=(.*[0-9])+)(?=(.*[!@#$%^&*().])+).{" + length + "}$";
             String password = passwordGenerator.generate(length, generateOptions);

@@ -81,7 +81,7 @@ public class PasswordManager {
                     thankUser();
                     System.exit(0);
             }
-        return password;
+            return password;
         }
     }
 
@@ -109,8 +109,7 @@ public class PasswordManager {
     private String generatePasswordFromSecurityLevel() {
         String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         PasswordGenerator gen = new PasswordGenerator();
-        String password = gen.generate(SecurityLevel.valueOf(securityLevel.toUpperCase()));
-        return password;
+        return gen.generate(SecurityLevel.valueOf(securityLevel.toUpperCase()));
     }
 
     private String generateCustomPassword() {
@@ -121,10 +120,10 @@ public class PasswordManager {
         boolean hasSymbol = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_SYMBOL, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
 
         Map<String,Boolean> generateOptions = new HashMap<>() {{
-            put(PasswordConstants.GET_RANDOM_UPPER, hasUpper);
-            put(PasswordConstants.GET_RANDOM_LOWER, hasLower);
-            put(PasswordConstants.GET_RANDOM_NUMBER, hasNumber);
-            put(PasswordConstants.GET_RANDOM_SYMBOL, hasSymbol);
+            put(PasswordGenerator.GET_RANDOM_UPPER, hasUpper);
+            put(PasswordGenerator.GET_RANDOM_LOWER, hasLower);
+            put(PasswordGenerator.GET_RANDOM_NUMBER, hasNumber);
+            put(PasswordGenerator.GET_RANDOM_SYMBOL, hasSymbol);
         }};
 
         int optionCount = (int) generateOptions.entrySet().stream()
@@ -140,8 +139,7 @@ public class PasswordManager {
         }
 
         PasswordGenerator gen = new PasswordGenerator();
-        String password = gen.generate(length, generateOptions);
-        return password;
+        return gen.generate(length, generateOptions);
     }
 
     private String siteNamePrompt() {

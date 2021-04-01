@@ -17,7 +17,7 @@ public class PasswordManager {
         this.prompter = prompter;
     }
 
-    public void start() {
+    public void initialize() {
         getPrompter().info(LINE_SEPARATOR);
         getPrompter().info("Welcome to Password Manager");
 

@@ -25,7 +25,7 @@ public class LoginIO {
 
             String siteName = logins[1];
             String userName = logins[2];
-            String password = new String(encoder.decode(logins[3]));
+            String password =encoder.decode(logins[3]);
 
             result.add(new Login(siteName, userName, password));
         });
@@ -34,9 +34,8 @@ public class LoginIO {
 
     public void write(Login login) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(pwFile, true))) {
-            byte[] passwordByte = login.getPassword().getBytes();
             String output = login.getId() + "," + login.getSiteName() + "," + login.getUserName() + ","
-                    + encoder.encode(passwordByte);
+                    + encoder.encode(login.getPassword());
             out.println(output);
         }
         catch (IOException e){

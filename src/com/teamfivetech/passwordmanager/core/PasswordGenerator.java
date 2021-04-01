@@ -15,7 +15,7 @@ public class PasswordGenerator {
     private static final int NUMBER_MIN = 48;
     private static final int NUMBER_MAX = 57;
     // Allowed symbols in password
-    private static final String SYMBOLS = "!@#$%^&*()";
+    private static final String SYMBOLS = "!@#$%^&*().";
     private static final Random rand = new Random();
 
     // Store generate methods in HashMap for easy filtering and invoking within an iteration

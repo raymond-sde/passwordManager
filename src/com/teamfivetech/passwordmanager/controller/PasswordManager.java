@@ -39,7 +39,7 @@ public class PasswordManager {
         String userName = userNamePrompt();
         String password = getPasswordFromPrompt();
 
-        // User selected cancel, return user to main menu
+        // User selected cancel or unsuccessful password generation, return user to main menu
         if ("".equals(password)) {
             getPrompter().info(PrompterConstants.PW_CANCEL_MSG);
             return;
@@ -67,7 +67,7 @@ public class PasswordManager {
 
             switch (selection) {
                 case "1":
-                    password = getPrompter().prompt("Enter new password: ");
+                    password = getPrompter().prompt(PrompterConstants.PASSWORD_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_PASSWORD_ERROR);
                     break;
                 case "2":
                     password = generatePasswordFromSecurityLevel();
@@ -103,7 +103,7 @@ public class PasswordManager {
     }
 
     private void thankUser() {
-        getPrompter().info("Thank you for using Password Manager");
+        getPrompter().info(PrompterConstants.THANK_USER);
     }
 
     private String generatePasswordFromSecurityLevel() {
@@ -114,11 +114,11 @@ public class PasswordManager {
     }
 
     private String generateCustomPassword() {
-        int length = Integer.parseInt(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LENGTH));
-        boolean hasUpper = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_UPPER));
-        boolean hasLower = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LOWER));
-        boolean hasNumber = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_NUMBER));
-        boolean hasSymbol = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_SYMBOL));
+        int length = Integer.parseInt(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LENGTH, PrompterConstants.CUSTOM_PW_LENGTH_REGEX, PrompterConstants. CUSTOM_PW_LENGTH_ERROR));
+        boolean hasUpper = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_UPPER, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
+        boolean hasLower = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LOWER, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
+        boolean hasNumber = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_NUMBER, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
+        boolean hasSymbol = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_SYMBOL, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
 
         Map<String,Boolean> generateOptions = new HashMap<>() {{
             put(PasswordConstants.GET_RANDOM_UPPER, hasUpper);
@@ -126,6 +126,18 @@ public class PasswordManager {
             put(PasswordConstants.GET_RANDOM_NUMBER, hasNumber);
             put(PasswordConstants.GET_RANDOM_SYMBOL, hasSymbol);
         }};
+
+        int optionCount = (int) generateOptions.entrySet().stream()
+                .filter(Map.Entry::getValue).count();
+
+        if (length < optionCount) {
+            getPrompter().info(PrompterConstants.CUSTOM_PW_LENGTH_LESS_THAN_OPTIONS_ERROR);
+            return "";
+        }
+
+        if (optionCount < 1) {
+            getPrompter().info(PrompterConstants.CUSTOM_PW_REQUIRED_ONE_OPTION_ERROR);
+        }
 
         PasswordGenerator gen = new PasswordGenerator();
         String password = gen.generate(length, generateOptions);

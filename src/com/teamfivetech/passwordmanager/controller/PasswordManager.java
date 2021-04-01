@@ -111,7 +111,7 @@ public class PasswordManager {
         System.out.println(LINE_SEPARATOR);
         System.out.printf("| %-4s", "ID");
         System.out.printf("| %-25s", "Site");
-        System.out.printf("| %-25s", "User");
+        System.out.printf("| %-25s", "Username");
         System.out.printf("| %-25s", "Password");
         System.out.printf("%n");
         System.out.println(LINE_SEPARATOR);

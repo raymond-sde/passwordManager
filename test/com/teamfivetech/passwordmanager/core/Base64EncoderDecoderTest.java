@@ -21,11 +21,8 @@ public class Base64EncoderDecoderTest {
         log1 = new Login("Google", "GoodName", "pass1234");
         log2 = new Login("Reddit", "CoolName", "1234pAsS");
 
-        pwByte1 = log1.getPassword().getBytes();
-        pwByte2 = log2.getPassword().getBytes();
-
-        encodedPW1 = encoder.encode(pwByte1);
-        encodedPW2 = encoder.encode(pwByte2);
+        encodedPW1 = encoder.encode(log1.getPassword());
+        encodedPW2 = encoder.encode(log2.getPassword());
     }
 
     @Test
@@ -36,8 +33,8 @@ public class Base64EncoderDecoderTest {
 
     @Test
     public void decode_shouldReturnTrue_whenValidPasswordDecoded() {
-        String decodedPW1 = new String(encoder.decode(encodedPW1));
-        String decodedPW2 = new String(encoder.decode(encodedPW2));
+        String decodedPW1 = encoder.decode(encodedPW1);
+        String decodedPW2 = encoder.decode(encodedPW2);
 
         assertEquals(log1.getPassword(), decodedPW1);
         assertEquals(log2.getPassword(), decodedPW2);
@@ -47,8 +44,7 @@ public class Base64EncoderDecoderTest {
     public void encode_shouldThrowNullPointerException_whenNullPasswordPassed() {
         log1 = new Login("Google", "GoodName", null);
 
-        pwByte1 = log1.getPassword().getBytes();
-        encodedPW1 = encoder.encode(pwByte1);
+        encodedPW1 = encoder.encode(log1.getPassword());
     }
 
     @Test(expected = NullPointerException.class)

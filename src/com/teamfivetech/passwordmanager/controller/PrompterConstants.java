@@ -16,6 +16,7 @@ public class PrompterConstants {
     public static final String WRITE_FAIL = "New Login creation failed: ";
     public static final String READ_FAIL = "Password retrieval failed: ";
     public static final String READ_FILE_EMPTY = "There are no Logins currently stored in Password Manager";
+    public static final String READ_TITLE_FAIL = "Title retrieval failed: ";
     public static final String CUSTOM_PW_PROMPT_LENGTH = "Enter desired password length (number): ";
     public static final String CUSTOM_PW_PROMPT_UPPER = "Include uppercase letters? (Y/N): ";
     public static final String CUSTOM_PW_PROMPT_LOWER = "Include lowercase letters? (Y/N): ";

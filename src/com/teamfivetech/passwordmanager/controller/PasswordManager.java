@@ -3,10 +3,12 @@ import com.apps.util.Prompter;
 import com.teamfivetech.passwordmanager.core.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class PasswordManager {
-    private static final String LINE_SEPARATOR = new String(new char[30]).replace("\0", "-");
+    private static final String LINE_SEPARATOR = new String(new char[100]).replace("\0", "-");
     private static final int NUMBER_PROMPT_MIN = 1;
     private static final String PW_FILE_PATH = "data/passwords.csv";
 
@@ -19,7 +21,12 @@ public class PasswordManager {
 
     public void start() {
         getPrompter().info(LINE_SEPARATOR);
-        getPrompter().info("Welcome to Password Manager");
+
+        try {
+            Files.lines(Path.of(".\\", "promptTitle.txt")).forEach(System.out::println);
+        } catch(IOException e) {
+            getPrompter().info(PrompterConstants.READ_TITLE_FAIL + e.getMessage());
+        }
 
         String selection = null;
         List<String> menuOptions = Arrays.asList("Store Login", "List Logins", "Quit");
@@ -96,9 +103,33 @@ public class PasswordManager {
             getPrompter().info(LINE_SEPARATOR);
             getPrompter().info(PrompterConstants.READ_FILE_EMPTY);
         }else {
-            for (Login log : readLogins) {
-                getPrompter().info(log.toString());
+            printLogins(readLogins);
+        }
+    }
+
+    private void printLogins(List<Login> readLogins) {
+        System.out.println(LINE_SEPARATOR);
+        System.out.printf("| %-4s", "ID");
+        System.out.printf("| %-25s", "Site");
+        System.out.printf("| %-25s", "User");
+        System.out.printf("| %-25s", "Password");
+        System.out.printf("%n");
+        System.out.println(LINE_SEPARATOR);
+
+        int index = 0;
+
+        for (Login log : readLogins) {
+            System.out.printf("| %-4s", log.getId());
+            System.out.printf("| %-25s", log.getSiteName());
+            System.out.printf("| %-25s", log.getUserName());
+            System.out.printf("| %-25s", log.getPassword());
+            System.out.printf("%n");
+
+            if (index != readLogins.size() - 1) {
+                System.out.println(LINE_SEPARATOR);
             }
+
+            index++;
         }
     }
 

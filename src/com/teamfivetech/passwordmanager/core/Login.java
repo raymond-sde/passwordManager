@@ -61,6 +61,6 @@ public class Login {
 
     @Override       // class Object
     public String toString() {
-        return getId() + ", Site: " + getSiteName() + ", Username: " + getUserName() + ", Password: " + getPassword();
+        return getId() + "," + getSiteName() + "," + getUserName() + "," + getPassword();
     }
 }

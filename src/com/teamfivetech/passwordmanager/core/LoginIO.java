@@ -25,7 +25,7 @@ public class LoginIO {
 
             String siteName = logins[1];
             String userName = logins[2];
-            String password =encoder.decode(logins[3]);
+            String password = encoder.decode(logins[3]);
 
             result.add(new Login(siteName, userName, password));
         });

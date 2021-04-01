@@ -3,6 +3,10 @@ package com.teamfivetech.passwordmanager.core;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 public class PasswordGeneratorTest {
@@ -14,7 +18,7 @@ public class PasswordGeneratorTest {
             "^(?=(.*[A-Z]){4})(?=(.*[a-z]){4})(?=(.*[0-9]){4}).{12}$";
     // 16 length, 4 upper, 4 lower, 4 number, 4 symbol in any order
     private static final String SECURITY_LEVEL_HIGH_REGEX =
-            "^(?=(.*[A-Z]){4})(?=(.*[a-z]){4})(?=(.*[0-9]){4})(?=(.*[!@#$%^&*()]){4}).{16}$";
+            "^(?=(.*[A-Z]){4})(?=(.*[a-z]){4})(?=(.*[0-9]){4})(?=(.*[!@#$%^&*().]){4}).{16}$";
 
     private PasswordGenerator passwordGenerator;
 
@@ -44,6 +48,26 @@ public class PasswordGeneratorTest {
         for (int i = 0; i < 5; i++) {
             String password = passwordGenerator.generate(SecurityLevel.HIGH);
             assertTrue(password.matches(SECURITY_LEVEL_HIGH_REGEX));
+        }
+    }
+
+    @Test
+    public void generate_shouldReturnCustomPassword_whenValidLengthWithAllOptions() {
+        Map<String,Boolean> generateOptions = new HashMap<>() {{
+            put(PasswordGenerator.GET_RANDOM_UPPER, true);
+            put(PasswordGenerator.GET_RANDOM_LOWER, true);
+            put(PasswordGenerator.GET_RANDOM_NUMBER, true);
+            put(PasswordGenerator.GET_RANDOM_SYMBOL, true);
+        }};
+
+        for (int i = 0; i < 5; i++) {
+            Random random = new Random();
+            // random number between 4 - 50 inclusive
+            int length = random.nextInt(50 - 4 + 1) + 4;
+            // n length, at least 1 upper, 1 lower, 1 number, 1 symbol in any order
+            String regex = "^(?=(.*[A-Z])+)(?=(.*[a-z])+)(?=(.*[0-9])+)(?=(.*[!@#$%^&*().])+).{" + length + "}$";
+            String password = passwordGenerator.generate(length, generateOptions);
+            assertTrue(password.matches(regex));
         }
     }
 }

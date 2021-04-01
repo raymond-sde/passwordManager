@@ -3,10 +3,12 @@ import com.apps.util.Prompter;
 import com.teamfivetech.passwordmanager.core.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class PasswordManager {
-    private static final String LINE_SEPARATOR = new String(new char[30]).replace("\0", "-");
+    private static final String LINE_SEPARATOR = new String(new char[100]).replace("\0", "-");
     private static final int NUMBER_PROMPT_MIN = 1;
     private static final String PW_FILE_PATH = "data/passwords.csv";
 
@@ -19,7 +21,12 @@ public class PasswordManager {
 
     public void initialize() {
         getPrompter().info(LINE_SEPARATOR);
-        getPrompter().info("Welcome to Password Manager");
+
+        try {
+            Files.lines(Path.of(".\\", "promptTitle.txt")).forEach(System.out::println);
+        } catch(IOException e) {
+            getPrompter().info(PrompterConstants.READ_TITLE_FAIL + e.getMessage());
+        }
 
         String selection = null;
         List<String> menuOptions = Arrays.asList("Store Login", "List Logins", "Quit");
@@ -39,7 +46,7 @@ public class PasswordManager {
         String userName = userNamePrompt();
         String password = getPasswordFromPrompt();
 
-        // User selected cancel, return user to main menu
+        // User selected cancel or unsuccessful password generation, return user to main menu
         if ("".equals(password)) {
             getPrompter().info(PrompterConstants.PW_CANCEL_MSG);
             return;
@@ -67,7 +74,7 @@ public class PasswordManager {
 
             switch (selection) {
                 case "1":
-                    password = getPrompter().prompt("Enter new password: ");
+                    password = getPrompter().prompt(PrompterConstants.PASSWORD_PROMPT, PrompterConstants.VALID_RESPONSE_REGEX, PrompterConstants.EMPTY_PASSWORD_ERROR);
                     break;
                 case "2":
                     password = generatePasswordFromSecurityLevel();
@@ -81,7 +88,7 @@ public class PasswordManager {
                     thankUser();
                     System.exit(0);
             }
-        return password;
+            return password;
         }
     }
 
@@ -96,40 +103,74 @@ public class PasswordManager {
             getPrompter().info(LINE_SEPARATOR);
             getPrompter().info(PrompterConstants.READ_FILE_EMPTY);
         }else {
-            for (Login log : readLogins) {
-                getPrompter().info(log.toString());
+            printLogins(readLogins);
+        }
+    }
+
+    private void printLogins(List<Login> readLogins) {
+        System.out.println(LINE_SEPARATOR);
+        System.out.printf("| %-4s", "ID");
+        System.out.printf("| %-25s", "Site");
+        System.out.printf("| %-25s", "Username");
+        System.out.printf("| %-25s", "Password");
+        System.out.printf("%n");
+        System.out.println(LINE_SEPARATOR);
+
+        int index = 0;
+
+        for (Login log : readLogins) {
+            System.out.printf("| %-4s", log.getId());
+            System.out.printf("| %-25s", log.getSiteName());
+            System.out.printf("| %-25s", log.getUserName());
+            System.out.printf("| %-25s", log.getPassword());
+            System.out.printf("%n");
+
+            if (index != readLogins.size() - 1) {
+                System.out.println(LINE_SEPARATOR);
             }
+
+            index++;
         }
     }
 
     private void thankUser() {
-        getPrompter().info("Thank you for using Password Manager");
+        getPrompter().info(PrompterConstants.THANK_USER);
     }
 
     private String generatePasswordFromSecurityLevel() {
         String securityLevel = getPrompter().prompt(PrompterConstants.SECURITY_LEVEL_PROMPT, PrompterConstants.SECURITY_LEVEL_REGEX, PrompterConstants.SECURITY_LEVEL_ERROR);
         PasswordGenerator gen = new PasswordGenerator();
-        String password = gen.generate(SecurityLevel.valueOf(securityLevel.toUpperCase()));
-        return password;
+        return gen.generate(SecurityLevel.valueOf(securityLevel.toUpperCase()));
     }
 
     private String generateCustomPassword() {
-        int length = Integer.parseInt(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LENGTH));
-        boolean hasUpper = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_UPPER));
-        boolean hasLower = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LOWER));
-        boolean hasNumber = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_NUMBER));
-        boolean hasSymbol = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_SYMBOL));
+        int length = Integer.parseInt(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LENGTH, PrompterConstants.CUSTOM_PW_LENGTH_REGEX, PrompterConstants. CUSTOM_PW_LENGTH_ERROR));
+        boolean hasUpper = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_UPPER, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
+        boolean hasLower = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_LOWER, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
+        boolean hasNumber = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_NUMBER, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
+        boolean hasSymbol = "Y".equalsIgnoreCase(getPrompter().prompt(PrompterConstants.CUSTOM_PW_PROMPT_SYMBOL, PrompterConstants.CUSTOM_PW_OPTION_REGEX, PrompterConstants.CUSTOM_PW_OPTION_ERROR));
 
         Map<String,Boolean> generateOptions = new HashMap<>() {{
-            put(PasswordConstants.GET_RANDOM_UPPER, hasUpper);
-            put(PasswordConstants.GET_RANDOM_LOWER, hasLower);
-            put(PasswordConstants.GET_RANDOM_NUMBER, hasNumber);
-            put(PasswordConstants.GET_RANDOM_SYMBOL, hasSymbol);
+            put(PasswordGenerator.GET_RANDOM_UPPER, hasUpper);
+            put(PasswordGenerator.GET_RANDOM_LOWER, hasLower);
+            put(PasswordGenerator.GET_RANDOM_NUMBER, hasNumber);
+            put(PasswordGenerator.GET_RANDOM_SYMBOL, hasSymbol);
         }};
 
+        int optionCount = (int) generateOptions.entrySet().stream()
+                .filter(Map.Entry::getValue).count();
+
+        if (length < optionCount) {
+            getPrompter().info(PrompterConstants.CUSTOM_PW_LENGTH_LESS_THAN_OPTIONS_ERROR);
+            return "";
+        }
+
+        if (optionCount < 1) {
+            getPrompter().info(PrompterConstants.CUSTOM_PW_REQUIRED_ONE_OPTION_ERROR);
+        }
+
         PasswordGenerator gen = new PasswordGenerator();
-        String password = gen.generate(length, generateOptions);
-        return password;
+        return gen.generate(length, generateOptions);
     }
 
     private String siteNamePrompt() {

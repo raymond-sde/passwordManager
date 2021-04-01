@@ -15,15 +15,20 @@ public class PasswordGenerator {
     private static final int NUMBER_MIN = 48;
     private static final int NUMBER_MAX = 57;
     // Allowed symbols in password
-    private static final String SYMBOLS = "!@#$%^&*()";
+    private static final String SYMBOLS = "!@#$%^&*().";
     private static final Random rand = new Random();
+    // HashMap keys for invoking corresponding methods
+    public static final String GET_RANDOM_LOWER = "getRandomLower";
+    public static final String GET_RANDOM_UPPER = "getRandomUpper";
+    public static final String GET_RANDOM_NUMBER = "getRandomNumber";
+    public static final String GET_RANDOM_SYMBOL = "getRandomSymbol";
 
     // Store generate methods in HashMap for easy filtering and invoking within an iteration
     private final Map<String, Callable<String>> generateActions = new HashMap<>() {{
-        put(PasswordConstants.GET_RANDOM_LOWER, () -> getRandomLower());
-        put(PasswordConstants.GET_RANDOM_UPPER, () -> getRandomUpper());
-        put(PasswordConstants.GET_RANDOM_NUMBER, () -> getRandomNumber());
-        put(PasswordConstants.GET_RANDOM_SYMBOL, () -> getRandomSymbol());
+        put(GET_RANDOM_LOWER, () -> getRandomLower());
+        put(GET_RANDOM_UPPER, () -> getRandomUpper());
+        put(GET_RANDOM_NUMBER, () -> getRandomNumber());
+        put(GET_RANDOM_SYMBOL, () -> getRandomSymbol());
     }};
 
     /**
@@ -36,23 +41,23 @@ public class PasswordGenerator {
         switch (securityLevel) {
             // 8 length, 4 upper, 4 lower
             case LOW:
-                actions.add(PasswordConstants.GET_RANDOM_UPPER);
-                actions.add(PasswordConstants.GET_RANDOM_LOWER);
+                actions.add(GET_RANDOM_UPPER);
+                actions.add(GET_RANDOM_LOWER);
                 result = generateByLengthActions(securityLevel.getPasswordLength(), actions);
                 break;
             // 12 length, 4 upper, 4 lower, 4 number
             case MEDIUM:
-                actions.add(PasswordConstants.GET_RANDOM_UPPER);
-                actions.add(PasswordConstants.GET_RANDOM_LOWER);
-                actions.add(PasswordConstants.GET_RANDOM_NUMBER);
+                actions.add(GET_RANDOM_UPPER);
+                actions.add(GET_RANDOM_LOWER);
+                actions.add(GET_RANDOM_NUMBER);
                 result = generateByLengthActions(securityLevel.getPasswordLength(), actions);
                 break;
             // 16 length, 4 upper, 4 lower, 4 number, 4 symbol
             case HIGH:
-                actions.add(PasswordConstants.GET_RANDOM_UPPER);
-                actions.add(PasswordConstants.GET_RANDOM_LOWER);
-                actions.add(PasswordConstants.GET_RANDOM_NUMBER);
-                actions.add(PasswordConstants.GET_RANDOM_SYMBOL);
+                actions.add(GET_RANDOM_UPPER);
+                actions.add(GET_RANDOM_LOWER);
+                actions.add(GET_RANDOM_NUMBER);
+                actions.add(GET_RANDOM_SYMBOL);
                 result = generateByLengthActions(securityLevel.getPasswordLength(), actions);
                 break;
             default:
@@ -71,11 +76,7 @@ public class PasswordGenerator {
 
         List<String> actions = new ArrayList<>(options.keySet());
 
-        String password = generateByLengthActions(length, actions);
-        // Trim any remaining characters that exceed desired length
-        password = password.substring(0, Math.min(password.length(), length));
-
-        return password;
+        return generateByLengthActions(length, actions);
     }
 
     /**
@@ -108,9 +109,12 @@ public class PasswordGenerator {
             });
         }
 
+        // Trim any remaining characters that exceed desired length
+        List<String> trimmedPassword = characters.subList(0, Math.min(characters.size(), length));
         // Randomize character index locations
-        Collections.shuffle(characters);
-        result = String.join("", characters);
+        Collections.shuffle(trimmedPassword);
+
+        result = String.join("", trimmedPassword);
 
         return result;
     }

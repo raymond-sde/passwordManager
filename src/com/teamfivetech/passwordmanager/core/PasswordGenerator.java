@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * Class that is used to generate randomized passwords from 2 options.
  * Option 1: Generate from preset security profile. Method name: generate(SecurityLevel securityLevel)
- * Option 2: Generate from length and complexity. Method name: generate(int length, Map<String,Boolean> generateOptions)
+ * Option 2: Generate from length and complexity. Method name: generate(int length, Map of String,Boolean generateOptions)
  * @author TeamFive Technology
  * @version 1.0.0
  */

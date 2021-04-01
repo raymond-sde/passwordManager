@@ -1,9 +1,3 @@
-/**
- * This class implements Base64 encoding to encode the Login object's password in a .csv file.
- *
- * @author TeamFive Technology
- * @version 1.0.0
- */
 package com.teamfivetech.passwordmanager.core;
 
 import java.io.FileWriter;
@@ -14,6 +8,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements Base64 encoding to encode the Login object's password in a .csv file.
+ *
+ * @author TeamFive Technology
+ * @version 1.0.0
+ */
 public class LoginIO {
     private String pwFile;
 
@@ -30,7 +30,7 @@ public class LoginIO {
     /**
      * Method used to read and create a List of Login objects from provided .csv file.
      * @return a List of Login objects.
-     * @throws IOException
+     * @throws IOException throws IOException
      */
     public List<Login> read() throws IOException {
         List<Login> result = new ArrayList<>();
@@ -50,7 +50,7 @@ public class LoginIO {
     /**
      * Method used to write a Login object to the .csv file provided.  New Logins are appended to the end of the file.
      * @param login a Login object
-     * @throws IOException
+     * @throws IOException throws IOException
      */
     public void write(Login login) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(pwFile, true))) {

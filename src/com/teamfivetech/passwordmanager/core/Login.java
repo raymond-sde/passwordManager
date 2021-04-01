@@ -1,11 +1,11 @@
+package com.teamfivetech.passwordmanager.core;
+
 /**
  * This class defines the Login object handled by the PasswordManager application.
  *
  * @author TeamFive Technology
  * @version 1.0.0
  */
-package com.teamfivetech.passwordmanager.core;
-
 public class Login {
     // FIELDS
     static int counter = 1;

@@ -1,3 +1,7 @@
+package com.teamfivetech.passwordmanager.core;
+
+import java.util.Base64;
+
 /**
  * A class implementing the EncoderDecoder interface, which allows for Base64 encoding and decoding to be performed on the
  * password fields of Login objects.
@@ -5,10 +9,6 @@
  * @author TeamFive Technology
  * @version 1.0.0
  */
-package com.teamfivetech.passwordmanager.core;
-
-import java.util.Base64;
-
 class Base64EncoderDecoder implements EncoderDecoder {
 
     private Base64.Decoder decoder = Base64.getDecoder();
